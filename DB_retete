@@ -1,0 +1,56 @@
+package com.example.practica;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.EditText;
+public class DB_retete extends SQLiteOpenHelper  {
+    public static final String DATABASE_NAME="test2";
+    public static final String TABLE_NAME="persoana";
+    public static final String col1="denumire";
+    public static final String col2="cantitate";
+    public static final String col3="pret";
+    public DB_retete( Context context) {
+        super(context, DATABASE_NAME, null, 1);
+    }
+    @Override
+    public void onCreate(SQLiteDatabase sqLiteDatabase) {
+        sqLiteDatabase.execSQL("create table "+TABLE_NAME+" (denumire text primary key, cantitate integer, pret double) ");
+    }
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME);
+        onCreate(db);
+    }
+    public boolean inserare(String denumire, int cantitate, double pret){
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+        contentValues.put(col1,denumire);
+        contentValues.put(col2,cantitate);
+        contentValues.put(col3,pret);
+        long result= db.insert(TABLE_NAME,null,contentValues);
+        return result!=-1?true:false;
+    }
+    public Cursor getAllData(){
+        SQLiteDatabase db=this.getWritableDatabase();
+        Cursor res=db.rawQuery("select * from "+TABLE_NAME,null);
+        return res;
+    }
+    // @Override
+    public boolean actualizareplus(String denumire, String cantitate, String pret){
+        SQLiteDatabase db=this.getWritableDatabase();
+
+        Cursor res=db.rawQuery("select * from "+TABLE_NAME,null);
+        ContentValues contentValues=new ContentValues();
+        contentValues.put(col2,cantitate);
+        contentValues.put(col3,pret);
+        long result= db.update(TABLE_NAME,contentValues," denumire=?",new String []{denumire});
+        return result!=0?true:false;
+    }
+    public Integer deleteData (String denumire) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_NAME, "denumire = ?",new String[] {denumire});
+    }
+}
+
