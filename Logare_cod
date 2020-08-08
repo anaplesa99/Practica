@@ -1,4 +1,4 @@
-package com.example.proiectfinal;
+package com.example.practica;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,14 +24,14 @@ public class MainActivity extends AppCompatActivity {
                 Boolean numepass= db.numepass(nume,pass);
                 if(numepass==true)
                 {if((nume.equals("anaplesa")) && (pass.equals("anaplesa")))
-                    {
-                        Toast.makeText(getApplicationContext(),"Admin Successfully Login", Toast.LENGTH_SHORT).show();
-                        openAdmin();
-                    }
-                    else {
-                        Toast.makeText(getApplicationContext(), "Successfully Login", Toast.LENGTH_SHORT).show();
-                        openActivity2();
-                    }
+                {
+                    Toast.makeText(getApplicationContext(),"Admin Successfully Login", Toast.LENGTH_SHORT).show();
+                    openActivity2();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Successfully Login", Toast.LENGTH_SHORT).show();
+                    openActivity2();
+                }
                 }
                 else
                     Toast.makeText(getApplicationContext(),"Nume sau parola gresita", Toast.LENGTH_SHORT).show();
@@ -53,8 +53,5 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainRegister.class);
         startActivity(intent);
     }
-    public void openAdmin() {
-        Intent intent = new Intent(this, admin.class);
-        startActivity(intent);
-    }
+
 }
