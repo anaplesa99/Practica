@@ -1,0 +1,49 @@
+package com.example.proiectfinal;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+import androidx.annotation.Nullable;
+
+public class DB extends SQLiteOpenHelper {
+
+    public DB(Context context) {
+        super(context, "Login.db", null, 1);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL("Create table user(nume_util text primary key, password text )");
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("drop table if exists user");
+    }
+    public boolean insert(String nume_util, String password){
+        SQLiteDatabase db= this.getWritableDatabase();
+        ContentValues contentValues= new ContentValues();
+        contentValues.put("nume_util", nume_util);
+        contentValues.put("password", password);
+        long ins= db.insert("user", null, contentValues);
+        if(ins==-1) return false;
+        else return true;
+    }
+    public Boolean chknum(String nume_util){
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor cursor= db.rawQuery("Select * from user where nume_util=?", new String[] {nume_util});
+        if(cursor.getCount()>0) return false;
+        else return true;
+    }
+    //verif nume si parola
+    public Boolean numepass(String nume, String password){
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor cursor= db.rawQuery("Select * from user where nume_util=? and password=?", new String[] {nume, password});
+        if(cursor.getCount()>0) return true;
+        else return false;
+    }
+}
+
